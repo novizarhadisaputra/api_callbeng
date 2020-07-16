@@ -1,0 +1,19 @@
+{
+  "name": "microservices",
+  "version": "1.0.0",
+  "description": "core API callbeng ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/novizarhadisaputra/api_callbeng"
+  },
+  "author": "Novizar Hadi Saputra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/novizarhadisaputra/api_callbeng/issues"
+  },
+  "homepage": "https://github.com/novizarhadisaputra/api_callbeng#readme"
+}

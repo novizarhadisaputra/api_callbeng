@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const kittySchema = mongoose.Schema({
+const { mongooseErrors } = require('../handlers/errorHandlers');
+const userSchema = mongoose.Schema({
     name: {
         type: String,
         required: 'Name is required'
@@ -8,7 +9,7 @@ const kittySchema = mongoose.Schema({
         type: String,
         required: 'Email is required'
     },
-    passowrd: {
+    password: {
         type: String,
         required: 'Password is required'
     },
@@ -16,4 +17,9 @@ const kittySchema = mongoose.Schema({
         type: String,
         required: 'Phone is required'
     }
+}, {
+    timestamps: true,
+    versionKey: false,
 });
+
+module.exports = mongoose.model('User', userSchema);

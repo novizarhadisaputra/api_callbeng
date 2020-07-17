@@ -12,6 +12,9 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+// declare controllers
+app.use(require('./routes/user'));
+
 // Setup error Handler
 const errorHandler = require('./handlers/errorHandlers');
 app.use(errorHandler.notFound);

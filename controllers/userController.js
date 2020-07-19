@@ -1,32 +1,104 @@
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const User = mongoose.model('User');
+const Role = mongoose.model('Role');
 
 // initiate bcrypt
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 exports.login = async (req, res) => {
-	const { email, password, phone, name } = req.body;
+	const { email, password, phone } = req.body;
 	const emailRegex = /[@gmail.com|@yahoo.com|@hotmail.com|@live.com]/;
+	if (!emailRegex.test(email)) throw 'Email is not supported from your domain.';
+
+	let user = await User.findOne({
+		$or: [ { email: req.body.email }, { phone: req.body.phone } ]
+	})
+		.then((users) => {
+			return users;
+		})
+		.catch((error) => {
+			res.status(500).json({
+				message: error,
+				status: 500
+			});
+		});
+
+	if (!user) {
+		if (phone == undefined) {
+			throw 'Email not found.';
+		}
+		throw 'Phone not found.';
+	}
+	let checkPassowrd = await bcrypt
+		.compare(req.body.password, user.password)
+		.then((match) => {
+			return match;
+		})
+		.catch((error) => {
+			res.status(500).json({
+				message: error,
+				status: 500
+			});
+		});
+	if (!checkPassowrd) throw 'Password not match.';
+
+	const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: `${process.env.JWT_EXPIRED}h` });
+	const data = jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+		if (err) {
+			res.status(401).json({
+				message: err,
+				status: 401
+			});
+		}
+		return decoded;
+	});
+
+	res.status(200).json({
+		message: `${user.name} logged in successfully`,
+		data: {
+			token: `${token}`,
+			loggedIn: new Date((await data.iat) * 1000),
+			expiresIn: new Date((await data.exp) * 1000)
+		}
+	});
 };
 
 exports.registration = async (req, res) => {
-	const { email, password, phone, name } = req.body;
-	const emailRegex = /[@gmail.com|@yahoo.com|@hotmail.com|@live.com]/;
+	const { email, password, phone, name, role } = req.body;
+	const emailRegex = /@gmail.com|@yahoo.com|@hotmail.com|@live.com/;
 	if (!emailRegex.test(email)) throw 'Email is not supported from your domain';
-	if (password.length < 8) throw 'Password must be atleast 8 Characters long';
-	hashPassowrd = new Promise((resolve, reject) => {
-		bcrypt.genSalt(saltRounds, function(err, salt) {
-			bcrypt.hash(password, salt, function(err, hash) {
-				if (err) throw 'Bcrypt error';
-				resolve(hash);
-			});
+	let emailCheck = await User.findOne({ email });
+	if (emailCheck) throw 'Email already exists.';
+	let phoneCheck = await User.findOne({ phone });
+	if (phoneCheck) throw 'Phone already exists.';
+	if (password.length < 8) throw 'Password must be atleast 8 Characters long.';
+
+	let hashPassowrd = await bcrypt.genSalt(saltRounds, function(err, salt) {
+		bcrypt.hash(password, salt, function(err, hash) {
+			if (err) resolve(hash);
 		});
 	});
-	req.body.password = await hashPassowrd;
-	const user = new User(req.body);
+	req.body.password = hashPassowrd;
 
+	let getRole = await Role.findById(req.body.role)
+		.then((role) => {
+			return role;
+		})
+		.catch((err) => {
+			res.status(500).json({
+				message: error,
+				status: 500
+			});
+		});
+	req.body.role = getRole;
+	const user = new User(req.body);
 	await user.save();
 
-	res.status(200).json({ status: 200, data: user });
+	res.status(200).json({
+		message: `Register success.`,
+		status: 200,
+		data: user
+	});
 };

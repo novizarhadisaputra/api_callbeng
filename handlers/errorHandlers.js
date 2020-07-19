@@ -31,9 +31,9 @@ exports.mongooseErrors = (err, req, res, next) => {
     });
 };
 
-exports.catchErrors = (e) => {
+exports.catchErrors = (fn) => {
     return function (req, res, next) {
-        e(req, res, next).catch((err) => {
+        fn(req, res, next).catch((err) => {
             if (typeof err == 'string') {
                 res.status(400).json({
                     message: err

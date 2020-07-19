@@ -1,27 +1,33 @@
+// Migrations
+const migrationModel = require('./migrations/CreateMainModel');
+migrationModel.mainCreate;
+
 const express = require('express');
 const app = express();
 
-app.get('/', function (req, res) {
-  res.status(200).json({
-    message: 'Hello World'
-  });
-})
+app.get('/', function(req, res) {
+	res.status(200).json({
+		message: 'Hello World'
+	});
+});
 
 app.use(express.json());
-app.use(express.urlencoded({
-  extended: true
-}));
+app.use(
+	express.urlencoded({
+		extended: true
+	})
+);
 
-// declare controllers
-app.use(require('./routes/user'));
+// declare routes
+app.use(require('./routes/index'));
 
 // Setup error Handler
 const errorHandler = require('./handlers/errorHandlers');
 app.use(errorHandler.notFound);
-if (process.env.ENV === "PRODUCTION") {
-  app.use(errorHandler.productionErrors);
+if (process.env.ENV === 'PRODUCTION') {
+	app.use(errorHandler.productionErrors);
 } else {
-  app.use(errorHandler.developmentErrors);
+	app.use(errorHandler.developmentErrors);
 }
 app.use(errorHandler.mongooseErrors);
 // End setup error handler

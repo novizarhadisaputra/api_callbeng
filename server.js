@@ -17,6 +17,7 @@ mongoose.connection.once('open', function() {
 const userModel = require('./models/User');
 const chatModel = require('./models/Chatroom');
 const messageModel = require('./models/Message');
+const roleModel = require('./models/Role');
 
 const app = require('./app');
 

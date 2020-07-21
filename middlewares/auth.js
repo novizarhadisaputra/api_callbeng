@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
 					status: 401
 				});
 			}
-			return decoded;
+			req.user = decoded;
 		});
 		
 		next();

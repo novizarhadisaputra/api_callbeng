@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const softDelete = require('mongoose-softdelete');
 const { mongooseErrors } = require('../handlers/errorHandlers');
 const userSchema = mongoose.Schema(
 	{
@@ -31,5 +32,7 @@ const userSchema = mongoose.Schema(
 		versionKey: false
 	}
 );
+
+userSchema.plugin(softDelete);
 
 module.exports = mongoose.model('User', userSchema);

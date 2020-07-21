@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const { catchErrors } = require('../handlers/errorHandlers');
-const userController = require('../controllers/userController');
+const articleController = require('../controllers/articleController');
 
-router.post('/login', catchErrors(userController.login));
-router.post('/registration', catchErrors(userController.registration));
+router.get('/', catchErrors(articleController.getArticle));
+router.post('/', catchErrors(articleController.postArticle));
 
 module.exports = router;

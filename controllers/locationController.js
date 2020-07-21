@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 exports.getLocation = async (req, res) => {
-	res.end('test');
+	
 };
 
 exports.postLocation = async (req, res) => {

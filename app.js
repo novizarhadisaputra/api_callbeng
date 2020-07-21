@@ -3,6 +3,7 @@ const migrationModel = require('./migrations/CreateMainModel');
 migrationModel.mainCreate;
 
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const app = express();
 
 app.get('/', function(req, res) {
@@ -17,6 +18,8 @@ app.use(
 		extended: true
 	})
 );
+app.use(fileUpload());
+app.use(express.static('./public'));
 
 // declare routes
 app.use(require('./routes/index'));

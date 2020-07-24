@@ -99,8 +99,13 @@ exports.registration = async (req, res) => {
 				status: 500
 			});
 		});
+
 	req.body.role = getRole._id;
-	let sending = await mailing.sendEmailRegistration(req.body);
+
+	let newData = req.body;
+	newData.path_html = 'public/email/verification';
+
+	let sending = await mailing.sendEmailRegistration(newData);
 	if (!sending) {
 		return res.status(500).json({
 			message: 'Internal Server Error',

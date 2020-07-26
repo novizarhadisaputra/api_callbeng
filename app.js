@@ -1,6 +1,6 @@
 // Migrations
-const migrationModel = require('./migrations/CreateMainModel');
-migrationModel.mainCreate;
+const staticModel = require('./migrations/CreateMainModel');
+staticModel.mainCreate;
 
 const express = require('express');
 const fileUpload = require('express-fileupload');

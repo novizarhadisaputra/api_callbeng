@@ -6,9 +6,9 @@ function mainCreate() {
 	createRoleModel();
 }
 
-function createRoleModel() {
-	if (!Role.estimatedDocumentCount) {
-		db.dropCollection('roles');
+async function createRoleModel() {
+	const counting = await Role.countDocuments({}).exec();
+	if (!counting) {
 		Role.insertMany([ { name: 'Developer' }, { name: 'Admin' }, { name: 'Technician' }, { name: 'Customer' } ])
 			.then(function() {
 				console.log('Data role model inserted'); // Success

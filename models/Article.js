@@ -7,7 +7,7 @@ const articleSchema = mongoose.Schema(
 			type: String,
 			required: 'Title is required'
 		},
-		publisher: {
+		author: {
 			type: mongoose.Schema.Types.ObjectId,
 			required: 'User is required',
 			ref: 'User'

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const softDelete = require('mongoose-softdelete');
 const { mongooseErrors } = require('../handlers/errorHandlers');
-const categorySchema = mongoose.Schema(
+const authorizationSchema = mongoose.Schema(
 	{
 		name: {
 			type: String,
@@ -14,6 +14,6 @@ const categorySchema = mongoose.Schema(
 	}
 );
 
-categorySchema.plugin(softDelete);
+authorizationSchema.plugin(softDelete);
 
-module.exports = mongoose.model('Category', categorySchema);
+module.exports = mongoose.model('Authorization', authorizationSchema);

@@ -4,6 +4,7 @@ staticModel.mainCreate;
 
 const express = require('express');
 const fileUpload = require('express-fileupload');
+const cors = require('cors');
 const app = express();
 
 app.get('/', function(req, res) {
@@ -18,6 +19,7 @@ app.use(
 		extended: true
 	})
 );
+app.use(cors());
 app.use(fileUpload());
 app.use(express.static('./public'));
 

@@ -1,17 +1,11 @@
 const mongoose = require('mongoose');
+const Location = mongoose.model('Location');
+const slug = require('slug')
 
-exports.getLocation = async (req, res) => {
-	
-};
+exports.create = async (req, res) => {};
 
-exports.postLocation = async (req, res) => {
-	
-};
+exports.read = async (req, res) => {};
 
-exports.updateLocation = async (req, res) => {
-	
-};
+exports.update = async (req, res) => {};
 
-exports.deleteLocation = async (req, res) => {
-	
-};
+exports.delete = async (req, res) => {};

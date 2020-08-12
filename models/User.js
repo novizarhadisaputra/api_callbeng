@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			required: 'User role is required',
 			ref: 'Role'
-		},
+		},	
 		verifyAt: { type: Date, default: null },
 		activeAt: { type: Date, default: null }
 	},

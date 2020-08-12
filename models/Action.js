@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const softDelete = require('mongoose-softdelete');
 const { mongooseErrors } = require('../handlers/errorHandlers');
-const categorySchema = mongoose.Schema(
+const actionSchema = mongoose.Schema(
 	{
 		name: {
 			type: String,
@@ -9,11 +9,18 @@ const categorySchema = mongoose.Schema(
 		},
 	},
 	{
+		role: {
+			type: mongoose.Schema.Types.ObjectId,
+			required: 'User role is required',
+			ref: 'Role'
+		}
+	},
+	{
 		timestamps: true,
 		versionKey: false
 	}
 );
 
-categorySchema.plugin(softDelete);
+actionSchema.plugin(softDelete);
 
-module.exports = mongoose.model('Category', categorySchema);
+module.exports = mongoose.model('Action', actionSchema);

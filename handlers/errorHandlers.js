@@ -33,12 +33,15 @@ exports.mongooseErrors = (err, req, res, next) => {
 
 exports.catchErrors = (fn) => {
     return function (req, res, next) {
+        let url = `${req.protocol}://${req.headers.host}${req.originalUrl}`;
         fn(req, res, next).catch((err) => {
             if (typeof err == 'string') {
+                console.log(`${url} 400`);
                 res.status(400).json({
                     message: err
                 });
             } else {
+                console.log(`${url} 500`);
                 next(err);
             }
         });

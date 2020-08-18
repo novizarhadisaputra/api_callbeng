@@ -181,7 +181,8 @@ exports.checkUserToken = async (token, type = '') => {
 		expired: { $gte: Date.now() }
 	};
 	if (type != '') filter.type = type;
-	let getTOken = await Token.findOne(filter).populate('user')
+	let getTOken = await Token.findOne(filter)
+		.populate('user')
 		.then((result) => {
 			if (result) {
 				result.checked = true;
@@ -248,14 +249,16 @@ exports.deleteUser = async (req, res) => {
 };
 
 exports.read = async (req, res) => {
-	let filter = {}
+	let filter = {};
 	for (const key in req.body) {
 		if (object.hasOwnProperty(key) && req.body != '') {
 			filter[key] = req.body[key];
 		}
 	}
-	await User.paginate({filter})
-		.populate('role')
+	const options = {
+		populate: [ 'role' ]
+	};
+	await User.paginate(filter, options)
 		.then((data) => {
 			res.status(200).json({ message: 'Get list success', data: data });
 		})

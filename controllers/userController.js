@@ -248,7 +248,13 @@ exports.deleteUser = async (req, res) => {
 };
 
 exports.read = async (req, res) => {
-	await User.find({})
+	let filter = {}
+	for (const key in req.body) {
+		if (object.hasOwnProperty(key) && req.body != '') {
+			filter[key] = req.body[key];
+		}
+	}
+	await User.paginate({filter})
 		.populate('role')
 		.then((data) => {
 			res.status(200).json({ message: 'Get list success', data: data });

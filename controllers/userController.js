@@ -13,6 +13,7 @@ const mailing = require('../mails/authEmail'); // email full authentication
 
 // initiate bcrypt
 const bcrypt = require('bcrypt');
+const { da } = require('date-fns/locale');
 const saltRounds = 10;
 
 // Authentication
@@ -250,17 +251,32 @@ exports.deleteUser = async (req, res) => {
 
 exports.read = async (req, res) => {
 	let filter = {};
-	for (const key in req.body) {
-		if (object.hasOwnProperty(key) && req.body != '') {
-			filter[key] = req.body[key];
+	for (const key in req.query) {
+		if (object.hasOwnProperty(key) && req.query != '') {
+			filter[key] = req.query[key];
 		}
 	}
-	const options = {
-		populate: [ 'role' ]
-	};
+	let options = {};
+	options.page = req.query.page === '' ? req.query.page : 1;
+	options.limit = req.query.limit === '' ? req.query.page : 10;
+	options.populate = [ 'role' ];
+
 	await User.paginate(filter, options)
 		.then((data) => {
-			res.status(200).json({ message: 'Get list success', data: data });
+			res.status(200).json({
+				message: 'Get list success',
+				data: data.docs,
+				totalData: data.totalDocs,
+				limit: data.limit,
+				offset: data.offset,
+				totalPages: data.totalPages,
+				page: data.page,
+				prevPage: data.prevPage,
+				nextPage: data.nextPage,
+				pagingCounter: data.pagingCounter,
+				hasPrevPage: data.hasPrevPage,
+				hasNextPage: data.hasNextPage
+			});
 		})
 		.catch((err) => {
 			res.status(500).json({ message: err });

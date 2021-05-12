@@ -37,7 +37,7 @@
     "node-addon-api": "^3.0.0",
     "node-pre-gyp": "^0.15.0",
     "node-tesseract-ocr": "^2.0.0",
-    "nodemailer": "^6.4.10",
+    "nodemailer": "^6.4.16",
     "nodemon": "^2.0.4",
     "passport": "^0.4.1",
     "slug": "^3.3.2"
